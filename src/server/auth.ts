@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { User } from "@prisma/client";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -8,6 +9,8 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import EmailProvider from "next-auth/providers/email";
+// import MailchimpProvider from "next-auth/providers/mailchimp";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -20,7 +23,7 @@ declare module "next-auth" {
     user: {
       id: string;
       // ...other properties
-      // role: UserRole;
+      role: User["role"];
     } & DefaultSession["user"];
   }
 
@@ -43,6 +46,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
       },
+      
     }),
   },
   adapter: PrismaAdapter(prisma),
@@ -50,6 +54,21 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    // MailchimpProvider({
+    //   clientId: process.env.MAILCHIMP_CLIENT_ID,
+    //   clientSecret: process.env.MAILCHIMP_CLIENT_SECRET
+    // })
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD
+        }
+      },
+      from: process.env.EMAIL_FROM
     }),
     /**
      * ...add more providers here.
