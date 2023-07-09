@@ -11,6 +11,7 @@ import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import EmailProvider from "next-auth/providers/email";
 import TwitterProvider from "next-auth/providers/twitter";
+import FacebookProvider from "next-auth/providers/facebook";
 
 // import MailchimpProvider from "next-auth/providers/mailchimp";
 
@@ -48,7 +49,6 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
       },
-      
     }),
   },
   adapter: PrismaAdapter(prisma),
@@ -57,14 +57,21 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    // MailchimpProvider({
-    //   clientId: process.env.MAILCHIMP_CLIENT_ID,
-    //   clientSecret: process.env.MAILCHIMP_CLIENT_SECRET
-    // })
+    FacebookProvider({
+      clientId: env.FACEBOOK_CLIENT_ID,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET,
+    }),
+
     TwitterProvider({
       clientId: env.TWITTER_CLIENT_ID,
       clientSecret: env.TWITTER_CLIENT_SECRET,
-      version:"2.0"
+      // authorization: {
+      //   url: "https://twitter.com/i/oauth2/authorize",
+      //   params: {
+      //     scope: "users.read tweet.read offline.access like.read list.read",
+      //   },
+      // },
+      version: "2.0",
     }),
     EmailProvider({
       server: {
@@ -72,10 +79,10 @@ export const authOptions: NextAuthOptions = {
         port: process.env.EMAIL_SERVER_PORT,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
     }),
     /**
      * ...add more providers here.
@@ -88,31 +95,29 @@ export const authOptions: NextAuthOptions = {
      */
   ],
   session: {
-   // Choose how you want to save the user session.
-  // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
-  // If you use an `adapter` however, we default it to `"database"` instead.
-  // You can still force a JWT session by explicitly defining `"jwt"`.
-  // When using `"database"`, the session cookie will only contain a `sessionToken` value,
-  // which is used to look up the session in the database.
-  strategy: "database",
+    // Choose how you want to save the user session.
+    // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+    // If you use an `adapter` however, we default it to `"database"` instead.
+    // You can still force a JWT session by explicitly defining `"jwt"`.
+    // When using `"database"`, the session cookie will only contain a `sessionToken` value,
+    // which is used to look up the session in the database.
+    strategy: "database",
 
-  // Seconds - How long until an idle session expires and is no longer valid.
-  maxAge: 30 * 24 * 60 * 60, // 30 days
+    // Seconds - How long until an idle session expires and is no longer valid.
+    maxAge: 30 * 24 * 60 * 60, // 30 days
 
-  // Seconds - Throttle how frequently to write to database to extend a session.
-  // Use it to limit write operations. Set to 0 to always update the database.
-  // Note: This option is ignored if using JSON Web Tokens
-  updateAge: 48 * 60 * 60, // 24 hours
-  
-
+    // Seconds - Throttle how frequently to write to database to extend a session.
+    // Use it to limit write operations. Set to 0 to always update the database.
+    // Note: This option is ignored if using JSON Web Tokens
+    updateAge: 48 * 60 * 60, // 24 hours
   },
   pages: {
-    signIn: '/components/auth/signin',
+    signIn: "/components/auth/signin",
     // signOut: '/auth/custom/signout',
     // error: '/auth/custom/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/custom/verify-request', // (used for check email message)
     // newUser: '/auth/custom/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-  }
+  },
 };
 
 /**
