@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { User } from "@prisma/client";
 import { type GetServerSidePropsContext } from "next";
 import {

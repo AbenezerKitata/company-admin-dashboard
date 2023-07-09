@@ -24,7 +24,7 @@ export default function SignIn({
                     <button
                       key={provider.name}
                       className="dark:focus:ring-[#4285F4]/55 inline-flex items-center rounded-lg border-b-8 border-[#3A558E] bg-[#4285F4] px-2 pt-1 text-center text-sm font-medium text-white hover:bg-[#3A558E]/90 focus:outline-none  focus:ring-4 focus:ring-[#4285F4]/50"
-                      onClick={() => signIn(provider.id)}
+                      onClick={() => void signIn(provider.id)}
                     >
                       <svg
                         className="m-2 h-4 w-4"
@@ -45,7 +45,7 @@ export default function SignIn({
                     <button
                       key={provider.name}
                       className="dark:focus:ring-[#4285F4]/55 inline-flex items-center rounded-lg border-b-8 border-[#03394F] bg-[#1da1f2] px-2 pt-1 text-center text-sm font-medium text-white hover:bg-[#03394F]/90 focus:outline-none  focus:ring-4 focus:ring-[#1da1f2]/50"
-                      onClick={() => signIn(provider.id)}
+                      onClick={() => void signIn(provider.id)}
                     >
                       <svg
                         className="m-2 h-4 w-4"
@@ -66,7 +66,7 @@ export default function SignIn({
                     <button
                       key={provider.name}
                       className="dark:focus:ring-[#4285F4]/55 inline-flex items-center rounded-lg border-b-8 border-[#023e8a] bg-[#1da1f2] px-2 pt-1 text-center text-sm font-medium text-white hover:bg-[#00b4d8]/90 focus:outline-none  focus:ring-4 focus:ring-[#0077b6]/50"
-                      onClick={() => signIn(provider.id)}
+                      onClick={() => void signIn(provider.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
