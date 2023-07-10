@@ -113,7 +113,7 @@ export const authOptions: NextAuthOptions = {
     updateAge: 48 * 60 * 60, // 24 hours
   },
   pages: {
-    signIn: "/components/auth/signin",
+    signIn: "/auth/signin",
     // signOut: '/auth/custom/signout',
     // error: '/auth/custom/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/custom/verify-request', // (used for check email message)
