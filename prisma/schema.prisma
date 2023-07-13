@@ -46,7 +46,6 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Int       @default(100)
-  address       Address?
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
@@ -71,9 +70,15 @@ model Post {
   authorId String @db.ObjectId
 }
 
-type Address {
-  street String
-  city   String
-  state  String
-  zip    String
+model StripeEvent {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  api_version      String?
+  data             Json
+  request          Json?
+  type             String
+  object           String
+  account          String?
+  created          DateTime
+  livemode         Boolean
+  pending_webhooks Int
 }

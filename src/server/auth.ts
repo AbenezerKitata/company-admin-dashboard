@@ -11,8 +11,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import EmailProvider from "next-auth/providers/email";
-import TwitterProvider from "next-auth/providers/twitter";
-import FacebookProvider from "next-auth/providers/facebook";
+// import TwitterProvider from "next-auth/providers/twitter";
+// import FacebookProvider from "next-auth/providers/facebook";
 
 // import MailchimpProvider from "next-auth/providers/mailchimp";
 
@@ -26,8 +26,9 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      role: string;
       // ...other properties
-      role: User["role"];
+      // role: User["role"];
     } & DefaultSession["user"];
   }
 
@@ -44,36 +45,48 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: async ({ session, user }) => {
+      const { id } = user
+      //fetch user details from the db
+      const dbuser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: {role: true}
+
+      });
+      //Add the role property to the session user object
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id,
+          role: dbuser?.role ?? 'user',
+        }
+      }
+    }
   },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      
     }),
-    FacebookProvider({
-      clientId: env.FACEBOOK_CLIENT_ID,
-      clientSecret: env.FACEBOOK_CLIENT_SECRET,
-    }),
+    // FacebookProvider({
+    //   clientId: env.FACEBOOK_CLIENT_ID,
+    //   clientSecret: env.FACEBOOK_CLIENT_SECRET,
+    // }),
 
-    TwitterProvider({
-      clientId: env.TWITTER_CLIENT_ID,
-      clientSecret: env.TWITTER_CLIENT_SECRET,
-      // authorization: {
-      //   url: "https://twitter.com/i/oauth2/authorize",
-      //   params: {
-      //     scope: "users.read tweet.read offline.access like.read list.read",
-      //   },
-      // },
-      version: "2.0",
-    }),
+    // TwitterProvider({
+    //   clientId: env.TWITTER_CLIENT_ID,
+    //   clientSecret: env.TWITTER_CLIENT_SECRET,
+    //   // authorization: {
+    //   //   url: "https://twitter.com/i/oauth2/authorize",
+    //   //   params: {
+    //   //     scope: "users.read tweet.read offline.access like.read list.read",
+    //   //   },
+    //   // },
+    //   version: "2.0",
+    // }),
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -113,7 +126,7 @@ export const authOptions: NextAuthOptions = {
     updateAge: 48 * 60 * 60, // 24 hours
   },
   pages: {
-    signIn: "/auth/signin",
+    // signIn: "/auth/signin",
     // signOut: '/auth/custom/signout',
     // error: '/auth/custom/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/custom/verify-request', // (used for check email message)

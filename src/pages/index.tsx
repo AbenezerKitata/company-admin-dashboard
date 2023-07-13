@@ -1,10 +1,14 @@
-// import { signIn, signOut, useSession } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { api } from "~/utils/api";
+
+
 export default function Home() {
   const { data: posts } = api.post.getAll.useQuery();
   // console.log("Posts are: ...", posts);
+
+
+
 
   const { data: sessionData } = useSession();
 
@@ -33,6 +37,7 @@ export default function Home() {
               ))}
           </div>
         </div>
+
       </main>
     </>
   );
