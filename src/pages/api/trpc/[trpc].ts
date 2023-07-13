@@ -1,3 +1,4 @@
+import { type inferAsyncReturnType } from "@trpc/server";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 import { env } from "~/env.mjs";
 import { appRouter } from "~/server/api/root";
@@ -16,3 +17,4 @@ export default createNextApiHandler({
         }
       : undefined,
 });
+export type Context = inferAsyncReturnType<typeof createTRPCContext>;

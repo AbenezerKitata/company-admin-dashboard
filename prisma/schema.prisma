@@ -52,6 +52,8 @@ model User {
   accounts                  Account[]
   sessions                  Session[]
   posts                     Post[]
+  Rental                    Rental[]
+  Vehicle                   Vehicle[]
 }
 
 model VerificationToken {
@@ -84,4 +86,35 @@ model StripeEvent {
   created          DateTime
   livemode         Boolean
   pending_webhooks Int
+}
+
+model Rental {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  vehicleId  String   @db.ObjectId
+  startDate  DateTime
+  endDate    DateTime
+  totalPrice Int
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Vehicle {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  description String?
+  image       String?
+  userId      String    @db.ObjectId
+  created_by  User      @relation(fields: [userId], references: [id])
+  Pricing     Pricing[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+}
+
+model Pricing {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  vehicleId String  @db.ObjectId
+  half      Int?
+  full      Int?
+  extended  Int?
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
 }
