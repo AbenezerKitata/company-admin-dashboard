@@ -67,9 +67,11 @@ model VerificationToken {
 
 model Post {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String @unique
+  slug     String? @unique
   title    String
   body     String
+  published Boolean? @default(false)
+  category  String?
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @db.ObjectId
 }
