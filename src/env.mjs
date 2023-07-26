@@ -25,7 +25,6 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     STRIPE_PK: z.string(),
     STRIPE_SK: z.string(),
-    // STRIPE_PRICE_ID: z.string(),
     STRIPE_WEBHOOK_SECRET: z.string(),
     // TWITTER_CLIENT_ID: z.string(),
     // TWITTER_CLIENT_SECRET: z.string(),
