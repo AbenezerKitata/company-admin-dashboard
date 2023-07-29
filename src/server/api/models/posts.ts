@@ -13,7 +13,6 @@ export const createPostSchema = z.object({
   published: z.boolean().optional(),
   category: z.string().optional(),
   slug: z.string().optional(),
-  author: z.string({ required_error: "author is required" }),
 });
 
 export const params = z.object({
@@ -30,13 +29,8 @@ export const updatePostSchema = z.object({
       published: z.boolean(),
       category: z.string(),
       slug: z.string(),
-      author: z.string(),
     })
     .partial(),
-});
-// DeletePost schema
-export const DeletePost = z.object({
-  id: z.string(),
 });
 export const filterQuery = z.object({
   limit: z.number().default(1),

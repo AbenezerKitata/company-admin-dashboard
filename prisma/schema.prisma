@@ -52,7 +52,8 @@ model User {
   accounts                  Account[]
   sessions                  Session[]
   posts                     Post[]
-
+  postsUpdatedBy            Post[]    @relation("PostUpdatedBy")
+  postsDeletedBy            Post[]    @relation("PostDeletedBy")
 }
 
 model VerificationToken {
@@ -66,12 +67,16 @@ model VerificationToken {
 }
 
 model Post {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String? @unique
-  title    String
-  body     String
-  published Boolean? @default(false)
-  category  String?
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String?  @unique
+  title       String
+  body        String
+  published   Boolean? @default(false)
+  category    String?
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String   @db.ObjectId
+  updatedBy   User?    @relation("PostUpdatedBy", fields: [updatedById], references: [id])
+  updatedById String?  @db.ObjectId
+  deletedBy   User?    @relation("PostDeletedBy", fields: [deletedById], references: [id])
+  deletedById String?  @db.ObjectId
 }

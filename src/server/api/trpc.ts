@@ -23,8 +23,18 @@ import { prisma } from "~/server/db";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-type CreateContextOptions = {
+export type CreateContextOptions = {
   session: Session | null;
+  revalidateSSG:
+  | ((
+      urlPath: string,
+      opts?:
+        | {
+            unstable_onlyGenerated?: boolean | undefined;
+          }
+        | undefined
+    ) => Promise<void>)
+  | null;
 };
 
 /**
@@ -40,6 +50,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    revalidateSSG: opts.revalidateSSG,
     prisma,
   };
 };
@@ -58,6 +69,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    revalidateSSG: res.revalidate,
   });
 };
 
