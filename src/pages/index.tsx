@@ -1,14 +1,37 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useState } from "react";
 import { api } from "~/utils/api";
+import { toast } from "react-toastify";
 
+export function newPostForm() {
+  const session = useSession();
+  if (session.status !== "authenticated") return null;
+
+  return <Form />;
+}
+
+function Form() {
+  const session = useSession();
+  const [titleValue, setTitleValue] = useState("");
+  const createPost = api.post.createPost.useMutation({
+    onSuccess() {
+      setTitleValue("");
+      if (session.status !== "authenticated") return;
+    },
+    onError(error) {
+      toast(error.message, {
+        type: "error",
+        position: "top-right",
+      });
+    },
+  });
+  return <></>;
+}
 
 export default function Home() {
-  const { data: posts } = api.post.getAll.useQuery();
+  const { data: posts } = api.post.getAllPosts.useQuery({ limit: 5, page: 1 });
   // console.log("Posts are: ...", posts);
-
-
-
 
   const { data: sessionData } = useSession();
 
@@ -25,19 +48,24 @@ export default function Home() {
             <p className="text-2xl text-white"></p>
             <p className="text-center text-2xl text-white">
               {sessionData && (
-                <span>Logged in as {sessionData.user?.name}</span>
+                <>
+                  <span>Logged in as {sessionData.user?.name}</span>
+                  <br />
+                  <span>User level is {sessionData.user?.role}</span>
+                </>
               )}
             </p>
             {sessionData &&
-              posts?.map((post) => (
-                <div key={post.id}>
-                  <h3>Title: {post.title}</h3>
-                  <p>{post.body}</p>
-                </div>
-              ))}
+              posts?.data.posts.map((post, idx) => {
+                console.log(post);
+                return (
+                  <div className="posts" key={idx}>
+                    <h1>{post.title}</h1>
+                  </div>
+                );
+              })}
           </div>
         </div>
-
       </main>
     </>
   );

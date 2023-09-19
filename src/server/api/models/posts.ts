@@ -3,6 +3,8 @@ import { z } from "zod";
 Look at this link 
 
 https://github.com/wpcodevo/nextjs-trpc-crud-app/blob/main
+or
+https://github.com/WebDevSimplified/twitter-clone/tree/main/src
 
 
 */
