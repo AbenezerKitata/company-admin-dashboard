@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+}
+
+h1 {
+  color: #ff6600;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h3 {
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group-radio {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-options,
+.services-list {
+  padding: 2px;
+  border: 3px solid #ff6600;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea,
+input[type="datetime-local"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #ff8533;
+}
+
+/* info button */
+.info-button {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  background-color: blue;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.circle.active {
+  background-color: white;
+  color: blue;
+}
+
+.info-text {
+  position: absolute;
+  top: 100%;
+  /* right: 10%; */
+  transform: translateX(12%);
+  width: 200px;
+  background-color: white;
+  color: black;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Responsive Styles */
+/* @media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    margin: 10px;
+  }
+} */
